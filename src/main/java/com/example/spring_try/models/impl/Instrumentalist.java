@@ -7,14 +7,15 @@ import com.example.spring_try.models.Performer;
 import com.example.spring_try.models.extra.Instrument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Component("eddie")
 public class Instrumentalist implements Performer {
     @Autowired
-    @StringedInstrument
-    @Strummed
+    @Qualifier("guitar")
     private Instrument instrument;
+    @Value("Eruption")
     private String song;
 
     public Instrumentalist() {

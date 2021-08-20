@@ -15,7 +15,7 @@ public class SpringTryApplication {
 
     public static void main(String[] args) throws PerformanceException {
         ApplicationContext context = new ClassPathXmlApplicationContext("components.xml");
-        Performer performer = (Performer) context.getBean("hank");
+        Performer performer = (Performer) context.getBean("eddie");
         performer.perform();
 
     }
