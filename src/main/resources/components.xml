@@ -2,16 +2,36 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation=
                "http://www.springframework.org/schema/beans
                http://www.springframework.org/schema/beans/spring-beans.xsd
                http://www.springframework.org/schema/context
-               http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+               http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd"
        default-init-method="turnOnLights"
        default-destroy-method="turnOfLights">
     <context:component-scan
         base-package="com.example.spring_try">
     </context:component-scan>
+
+    <bean id="audience" class="com.example.spring_try.Audience"/>
+    <bean id="magician" class="com.example.spring_try.models.impl.Magician" />
+    <aop:config>
+        <aop:aspect ref="audience">
+            <aop:pointcut id="performance" expression="execution(* com.example.spring_try.models.Performer.perform())"/>
+            <aop:before method="takeSeats" pointcut-ref="performance"/>
+            <aop:before method="turnOffCellPhones" pointcut-ref="performance"/>
+            <aop:after-returning method="applaud" pointcut-ref="performance"/>
+            <aop:after-throwing method="demandRefund" pointcut-ref="performance"/>
+        </aop:aspect>
+        <aop:aspect ref="magician">
+            <aop:pointcut id="thinking" expression="execution(* com.example.spring_try.models.Thinker.thinkOfSomething(String)) and args(thoughts)"/>
+            <aop:before method="interceptThoughts" pointcut-ref="thinking" arg-names="thoughts"/>
+        </aop:aspect>
+    </aop:config>
+
+
+
 <!--    <bean id="duke"
           class="com.example.spring_try.models.impl.Juggler">
         <constructor-arg value="15"/>
